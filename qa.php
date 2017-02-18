@@ -1,4 +1,8 @@
 <?php
+/* Plugin Captcha Q&A
+ * Copyright (C) 2013 - 2017 RJCreations. All rights reserved.
+ * License GNU General Public License version 3 or later; see LICENSE.txt
+*/
 defined('_JEXEC') or die;
 
 class PlgCaptchaQa extends JPlugin
