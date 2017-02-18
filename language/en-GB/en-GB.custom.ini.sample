@@ -1,0 +1,14 @@
+; Plugin Captcha Q&A
+; Copyright (C) 2013 - 2017 RJCreations. All rights reserved.
+; License GNU General Public License version 3 or later; see LICENSE.txt
+; Note : All ini files need to be saved as UTF-8
+
+PLG_CAPTCHA_QA_Q1="WWhat is the 4<sup>th</sup> letter of the word 'foxtail'? | t,T"
+PLG_CAPTCHA_QA_Q2="WWhat is the 3<sup>rd</sup> letter of the word 'pony'? | n,N"
+PLG_CAPTCHA_QA_Q3="WWhat is the 5<sup>th</sup> letter of the word 'compromise'? | r,R"
+PLG_CAPTCHA_QA_Q4="HHow many 3's are in the number: 1,347,237? | 2,two"
+PLG_CAPTCHA_QA_Q5="HHow many 7's are in the number: 17,374,327? | 3,three"
+PLG_CAPTCHA_QA_Q6="HHow many 9's are in the number: 1,347,237? | 0,zero,none"
+PLG_CAPTCHA_QA_Q7="WWhat is the sum of four plus three? | 7,seven"
+PLG_CAPTCHA_QA_Q8="WWhat is the sum of 2 plus three? | 5,five"
+PLG_CAPTCHA_QA_Q9="WWhat is the sum of six plus two? | 8,eight"

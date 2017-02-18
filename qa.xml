@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="captcha" method="upgrade">
+	<name>PLG_CAPTCHA_QA</name>
+	<version>1.1</version>
+	<creationDate>Dec 2013</creationDate>
+	<author>Ron Crans</author>
+	<authorEmail>ron@rnp-web.net</authorEmail>
+	<authorUrl>rnp-web.net</authorUrl>
+	<copyright>Copyright (C) 2013 - 2017 RJCreations. All rights reserved.</copyright>
+	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
+	<description>PLG_CAPTCHA_QA_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="qa">qa.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_captcha_qa.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_captcha_qa.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="time_check"
+					type="checkbox"
+					default="checked"
+					label="PLG_CAPTCHA_QA_TIME_CHECK_LABEL"
+					description="PLG_CAPTCHA_QA_TIME_CHECK_DESC"
+					filter="integer" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
