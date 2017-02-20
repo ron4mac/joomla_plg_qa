@@ -23,8 +23,8 @@
 			<fieldset name="basic">
 				<field
 					name="time_check"
-					type="checkbox"
-					default="checked"
+					type="number"
+					default="0"
 					label="PLG_CAPTCHA_QA_TIME_CHECK_LABEL"
 					description="PLG_CAPTCHA_QA_TIME_CHECK_DESC"
 					filter="integer" />

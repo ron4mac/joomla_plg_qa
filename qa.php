@@ -10,10 +10,13 @@ class PlgCaptchaQa extends JPlugin
 
 	protected $autoloadLanguage = true;
 
+	protected $timecheck;
+
 	public function __construct ($subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
+		$this->timecheck = $this->params->get('time_check', 10, 'INT');
 	}
 
 	/**
@@ -62,7 +65,7 @@ class PlgCaptchaQa extends JPlugin
 			$this->_subject->setError(JText::_('PLG_CAPTCHA_QA_ERROR_GENERAL'));
 			return false;
 		}
-		if ((time()-$tm) < 15) {
+		if ($this->timecheck && ((time()-$tm) < $this->timecheck)) {
 			$this->_subject->setError(JText::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.JText::_('PLG_CAPTCHA_QA_ERROR_TOO_QUICK'));
 			return false;
 		}
