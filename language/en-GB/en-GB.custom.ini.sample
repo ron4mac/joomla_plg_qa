@@ -3,12 +3,15 @@
 ; License GNU General Public License version 3 or later; see LICENSE.txt
 ; Note : All ini files need to be saved as UTF-8
 
-; Change questions and answers below as desired; then remove '.sample' from the end of this file's name
+; Change items below as desired; then remove '.sample' from the end of this file's name
 
-; Questions and answers .. format: <question> | <comma separated list of possible answers>
-PLG_CAPTCHA_QA_Q1="What is the 4<sup>th</sup> letter of the word 'foxtail'? | t,T"
-PLG_CAPTCHA_QA_Q2="What is the 3<sup>rd</sup> letter of the word 'pony'? | n,N"
-PLG_CAPTCHA_QA_Q3="What is the 5<sup>th</sup> letter of the word 'compromise'? | r,R"
+; Labels
+PLG_CAPTCHA_QA_LABEL_PLEASE="To protect our site from spam, please answer a simple question."
+
+; Questions and answers .. format: <question> | <comma separated list of possible answers (no spaces on either side of the commas)>
+PLG_CAPTCHA_QA_Q1="What is the 4<sup>th</sup> letter of the word 'foxtail'? | t"
+PLG_CAPTCHA_QA_Q2="What is the 3<sup>rd</sup> letter of the word 'pony'? | n"
+PLG_CAPTCHA_QA_Q3="What is the 5<sup>th</sup> letter of the word 'compromise'? | r"
 PLG_CAPTCHA_QA_Q4="How many 3's are in the number: 1,347,237? | 2,two"
 PLG_CAPTCHA_QA_Q5="How many 7's are in the number: 17,374,327? | 3,three"
 PLG_CAPTCHA_QA_Q6="How many 9's are in the number: 1,347,237? | 0,zero,none"
@@ -22,3 +25,8 @@ PLG_CAPTCHA_QA_Q9="What is the sum of six plus two? | 8,eight"
 ; "Type the word 'cat' without the a. | ct,c t"
 ; "How may words are in THIS sentence? | 7,seven"
 ; "What is the number that follows four? | 5,five"
+
+; Questions that require that the user has some general knowledge of things
+; "How many weeks are there in a year? | 52,fifty-two"
+; "How many legs do most dogs have? | 4,four"
+; "How many days are there in the month of September? | 30,thirty"

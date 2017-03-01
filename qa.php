@@ -1,15 +1,14 @@
 <?php
-/* Plugin Captcha Q&A
- * Copyright (C) 2013 - 2017 RJCreations. All rights reserved.
- * License GNU General Public License version 3 or later; see LICENSE.txt
-*/
+/*
+ * @package    Plugin Captcha Q&A
+ * @copyright  (C) 2013 - 2017 RJCreations. All rights reserved.
+ * @license    GNU General Public License version 3 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die;
 
 class PlgCaptchaQa extends JPlugin
 {
-
 	protected $autoloadLanguage = true;
-
 	protected $timecheck;
 
 	public function __construct ($subject, $config)
@@ -19,7 +18,7 @@ class PlgCaptchaQa extends JPlugin
 		$this->timecheck = $this->params->get('time_check', 10, 'INT');
 	}
 
-	/**
+	/*
 	 * Initialise the captcha
 	 * @param   string	$id	The id of the field.
 	 * @return  Boolean	True on success, false otherwise
@@ -31,7 +30,7 @@ class PlgCaptchaQa extends JPlugin
 		return true;
 	}
 
-	/**
+	/*
 	 * Gets the challenge HTML
 	 * @return  string  The HTML to be embedded in the form.
 	 */
@@ -48,10 +47,10 @@ class PlgCaptchaQa extends JPlugin
 		return $label.'<br />'.trim($q).$fld.$ccd;
 	}
 
-	/**
-	  * Calls an HTTP POST function to verify if the user's guess was correct
-	  * @return  True if the answer is correct, false otherwise
-	  */
+	/*
+	 * Calls an HTTP POST function to verify if the user's guess was correct
+	 * @return  True if the answer is correct, false otherwise
+	 */
 	public function onCheckAnswer ($code)
 	{
 		$input = JFactory::getApplication()->input;
