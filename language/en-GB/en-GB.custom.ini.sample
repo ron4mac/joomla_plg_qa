@@ -20,10 +20,10 @@ PLG_CAPTCHA_QA_Q8="What is the sum of 2 plus three? | 5,five"
 PLG_CAPTCHA_QA_Q9="What is the sum of six plus two? | 8,eight"
 
 ; Good questions would be ones that have everything in the question to determine the answer,
-;   not relying on the users knowledge of something else.
+;   not relying on the user's knowledge of something else.
 ; Other example suggestions
 ; "Type the word 'cat' without the a. | ct,c t"
-; "How may words are in THIS sentence? | 7,seven"
+; "How many words are in THIS sentence? | 7,seven"
 ; "What is the number that follows four? | 5,five"
 
 ; Questions that require that the user has some general knowledge of things
