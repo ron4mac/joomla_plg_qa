@@ -56,7 +56,7 @@ class PlgCaptchaQa extends JPlugin
 		$input = JFactory::getApplication()->input;
 		$ccd = $input->get('captcha_code', '--', 'cmd');
 		list($qn,$tm,$ck) = explode('-', $ccd);
-		if ((($qn * $tm) % 97) != $ck) {
+		if ((((int)$qn * (int)$tm) % 97) != (int)$ck) {
 			$this->_subject->setError(JText::_('PLG_CAPTCHA_QA_ERROR_GENERAL'));
 			return false;
 		}
