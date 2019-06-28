@@ -1,7 +1,7 @@
 <?php
 /*
  * @package    Plugin Captcha Q&A
- * @copyright  (C) 2013 - 2017 RJCreations. All rights reserved.
+ * @copyright  (C) 2013 - 2019 RJCreations. All rights reserved.
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -39,7 +39,7 @@ class PlgCaptchaQa extends JPlugin
 		$rq = (rand() % 9) + 1;
 		$tm = time();
 		$sf = ($rq * $tm) % 97;
-		$fld = '<br /><input type="text" '.$class.' id="'.$id.'" name="'.$name.'" value="" />';
+		$fld = '<br /><input type="text" '.$class.' id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
 		$ccd = '<input type="hidden" name="captcha_code" value="'."{$rq}-{$tm}-{$sf}".'" />';
 		$label = '<span>'.JText::_('PLG_CAPTCHA_QA_LABEL_PLEASE').'</span>';
 		$qa = JText::_('PLG_CAPTCHA_QA_Q'.$rq);
