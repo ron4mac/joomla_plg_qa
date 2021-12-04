@@ -56,19 +56,20 @@ class PlgCaptchaQa extends JPlugin
 	 */
 	public function onCheckAnswer ($code)
 	{
-		$input = Factory::getApplication()->input;
+		$app = Factory::getApplication();
+		$input = $app->input;
 		$ccd = $input->get('captcha_code', '--', 'cmd');
 		list($qn,$tm,$ck) = explode('-', $ccd);
 		if ((((int)$qn * (int)$tm) % 97) != (int)$ck) {
-			$this->_subject->setError(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'));
+			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'), 'error');
 			return false;
 		}
 		if (!$qn) {
-			$this->_subject->setError(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'));
+			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'), 'error');
 			return false;
 		}
 		if ($this->timecheck && ((time()-$tm) < $this->timecheck)) {
-			$this->_subject->setError(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_TOO_QUICK'));
+			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_TOO_QUICK'), 'error');
 			return false;
 		}
 		$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
@@ -77,7 +78,7 @@ class PlgCaptchaQa extends JPlugin
 		if (in_array(trim($code),$cas)) {
 			return true;
 		}
-		$this->_subject->setError(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_INCORRECT'));
+		$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_INCORRECT'), 'error');
 		return false;
 	}
 
