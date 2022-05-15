@@ -1,7 +1,7 @@
 <?php
 /*
  * @package    Plugin Captcha Q&A
- * @copyright  (C) 2013 - 2021 RJCreations. All rights reserved.
+ * @copyright  (C) 2013 - 2022 RJCreations. All rights reserved.
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;

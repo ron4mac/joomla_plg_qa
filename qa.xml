@@ -2,11 +2,11 @@
 <extension version="3.0" type="plugin" group="captcha" method="upgrade">
 	<name>PLG_CAPTCHA_QA</name>
 	<version>1.4</version>
-	<creationDate>December 2021</creationDate>
+	<creationDate>May 2022</creationDate>
 	<author>Ron Crans</author>
 	<authorEmail>ronjc@rjconline.net</authorEmail>
 	<authorUrl>rjconline.net</authorUrl>
-	<copyright>Copyright (C) 2013 - 2021 RJCreations. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2013 - 2022 RJCreations. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<description>PLG_CAPTCHA_QA_XML_DESCRIPTION</description>
 	<files>
