@@ -42,7 +42,7 @@ class PlgCaptchaQa extends JPlugin
 		$rq = (rand() % 9) + 1;
 		$tm = time();
 		$sf = ($rq * $tm) % 97;
-		$fld = '<br><input type="text" '.$class.' id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
+		$fld = '<br><input type="text" class="form-control'.($class?' '.$class:'').'" id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
 		$ccd = '<input type="hidden" name="captcha_code" value="'."{$rq}-{$tm}-{$sf}".'" />';
 		$label = '<span>'.Text::_('PLG_CAPTCHA_QA_LABEL_PLEASE').'</span>';
 		$qa = Text::_('PLG_CAPTCHA_QA_Q'.$rq);
@@ -75,7 +75,7 @@ class PlgCaptchaQa extends JPlugin
 		$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
 		list($q,$a) = explode('|',$qa);
 		$cas = explode(',',trim($a));
-		if (in_array(trim($code),$cas)) {
+		if (in_array(trim($code), array_map('trim', $cas))) {
 			return true;
 		}
 		$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_INCORRECT'), 'error');
