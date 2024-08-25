@@ -1,15 +1,19 @@
 <?php
-/*
- * @package    Plugin Captcha Q&A
- * @copyright  (C) 2013 - 2022 RJCreations. All rights reserved.
- * @license    GNU General Public License version 3 or later; see LICENSE.txt
- */
+/**
+* @package		plg_captcha_qa (Plugin Captcha Q&A)
+* @copyright	(C) 2013-2024 RJCreations. All rights reserved.
+* @license		GNU General Public License version 3 or later; see LICENSE.txt
+* @since		1.5.0
+*/
+namespace RJCreations\Plugin\Captcha\Qa\Extension;
+
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
 
-class PlgCaptchaQa extends JPlugin
+class Qa extends CMSPlugin
 {
 	protected $autoloadLanguage = true;
 	protected $timecheck;
@@ -29,7 +33,7 @@ class PlgCaptchaQa extends JPlugin
 	public function onInit ($id)
 	{
 		$lang = Factory::getLanguage();
-		$lang->load('custom' , dirname(__FILE__), $lang->getTag(), true);
+		$lang->load('custom' , dirname(dirname(dirname(__FILE__))), $lang->getTag(), true);
 		return true;
 	}
 
