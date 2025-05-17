@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="captcha" method="upgrade">
 	<name>PLG_CAPTCHA_QA</name>
-	<version>1.5.0</version>
 	<creationDate>August 2024</creationDate>
 	<author>Ron Crans</author>
 	<authorEmail>ronjc@rjconline.net</authorEmail>
 	<authorUrl>rjconline.net</authorUrl>
-	<copyright>Copyright (C) 2013-2024 RJCreations. All rights reserved.</copyright>
+	<version>1.5.0</version>
+	<updater jver="((4\.[1-8])||(5\.[0-3]))" pver="7.2" />
+	<copyright>Copyright (C) 2013-2025 RJCreations. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<description>PLG_CAPTCHA_QA_XML_DESCRIPTION</description>
 	<namespace path="src">RJCreations\Plugin\Captcha\Qa</namespace>
@@ -33,6 +34,6 @@
 		</fields>
 	</config>
 	<updateservers>
-		<server type="extension" priority="1" name="Captcha Q&amp;A Updates">https://rjcrans.net/jupdates/plg_qa/updates.xml</server>
+		<server type="extension" priority="1" name="Captcha Q&amp;A Updates">https://rjcrans.net/jupdates/plg_qa/updates.php</server>
 	</updateservers>
 </extension>
