@@ -1,0 +1,90 @@
+[
+  {
+    "What is the 4<sup>th</sup> letter of the word 'foxtail'?": [
+      "t"
+    ]
+  },
+  {
+    "What is the 3<sup>rd</sup> letter of the word 'pony'?": [
+      "n"
+    ]
+  },
+  {
+    "What is the 5<sup>th</sup> letter of the word 'compromise'?": [
+      "r"
+    ]
+  },
+  {
+    "How many 3's are in the number: 1,347,237?": [
+      "2",
+      "two"
+    ]
+  },
+  {
+    "How many 7's are in the number: 17,374,327?": [
+      "3",
+      "three"
+    ]
+  },
+  {
+    "How many 9's are in the number: 1,347,237?": [
+      "0",
+      "zero",
+      "none"
+    ]
+  },
+  {
+    "What is the sum of four plus three?": [
+      "7",
+      "seven"
+    ]
+  },
+  {
+    "What is the sum of 2 plus three?": [
+      "5",
+      "five"
+    ]
+  },
+  {
+    "What is the sum of six plus two?": [
+      "8",
+      "eight"
+    ]
+  },
+  {
+    "Type the word 'cat' without the a.": [
+      "ct",
+      "c t"
+    ]
+  },
+  {
+    "How many words are in THIS sentence?": [
+      "7",
+      "seven"
+    ]
+  },
+  {
+    "What is the number that follows four?": [
+      "5",
+      "five"
+    ]
+  },
+  {
+    "How many weeks are there in a year?": [
+      "52",
+      "fifty-two"
+    ]
+  },
+  {
+    "How many legs do most dogs have?": [
+      "4",
+      "four"
+    ]
+  },
+  {
+    "How many days are there in the month of September?": [
+      "30",
+      "thirty"
+    ]
+  }
+]

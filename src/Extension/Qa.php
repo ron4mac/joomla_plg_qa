@@ -17,6 +17,7 @@ class Qa extends CMSPlugin
 {
 	protected $autoloadLanguage = true;
 	protected $timecheck;
+	protected $qandas = [];
 
 	public function __construct ($subject, $config)
 	{
@@ -34,6 +35,10 @@ class Qa extends CMSPlugin
 	{
 		$lang = Factory::getLanguage();
 		$lang->load('custom' , dirname(dirname(dirname(__FILE__))), $lang->getTag(), true);
+		$this->getQandas('en-GB');
+		if ($lang->getTag() != 'en-GB') {
+			$this->getQandas($lang->getTag());
+		}
 		return true;
 	}
 
@@ -43,6 +48,16 @@ class Qa extends CMSPlugin
 	 */
 	public function onDisplay ($name, $id, $class)
 	{
+		if ($this->qandas) {
+			$rq = (rand() % count($this->qandas));
+			$tm = time();
+			$sf = (($rq+1) * $tm) % 97;
+			$fld = '<br><input type="text" class="form-control'.($class?' '.$class:'').'" id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
+			$ccd = '<input type="hidden" name="captcha_code" value="'.($rq+1)."-{$tm}-{$sf}".'" />';
+			$label = '<span>'.Text::_('PLG_CAPTCHA_QA_LABEL_PLEASE').'</span>';
+			$q = key($this->qandas[$rq]);
+			return $label.'<br>'.trim($q).$fld.$ccd;
+		}
 		$rq = (rand() % 9) + 1;
 		$tm = time();
 		$sf = ($rq * $tm) % 97;
@@ -76,9 +91,10 @@ class Qa extends CMSPlugin
 			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_TOO_QUICK'), 'error');
 			return false;
 		}
-		$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
-		list($q,$a) = explode('|',$qa);
-		$cas = explode(',',trim($a));
+	//	$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
+	//	list($q,$a) = explode('|',$qa);
+	//	$cas = explode(',',trim($a));
+		$cas = $this->getQans($qn);
 		if (in_array(trim($code), array_map('trim', $cas))) {
 			return true;
 		}
@@ -86,4 +102,38 @@ class Qa extends CMSPlugin
 		return false;
 	}
 
+	private function getQans ($qn)
+	{
+		if ($this->qandas) {
+			return $this->qandas[$qn-1];
+		} else {
+			$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
+			list($q,$a) = explode('|',$qa);
+			return explode(',',trim($a));
+		}
+	}
+
+	private function getQandas ($ln)
+	{
+		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/custom/qandas_'.$ln.'.json';
+		if (file_exists($qaf)) {
+			try {
+				$qas = json_decode(file_get_contents($qaf),true);
+				$this->qandas = $qas;
+				return;
+			} catch (\JsonException $e) {
+			}
+		}
+
+		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/qandas_'.$ln.'.json';
+		if (file_exists($qaf)) {
+			try {
+				$qas = json_decode(file_get_contents($qaf),true);
+				$this->qandas = $qas;
+				return;
+			} catch (\JsonException $e) {
+				return null;
+			}
+		}
+	}
 }

@@ -16,6 +16,9 @@
 		<folder>language</folder>
 		<folder>src</folder>
 	</files>
+	<media destination="plg_captcha_qa" folder="media">
+		<folder>custom</folder>
+	</media>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
