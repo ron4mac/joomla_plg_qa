@@ -7,4 +7,7 @@ What is the sum of 2 plus three? ... possible answers: 5,five
 
 The plugin will also reject rapid submissions of the form.  
 
-Captcha labeling and questions are customizable ... see file custom.ini.sample in the language folder.
+Captcha labeling and questions are customizable ... see file <em>custom.ini.sample</em> in the language folder.
+
+#### Version 1.5+ moves questions and answers to JSON files in <em>media/plg_captcha_qa</em>
+This allows any number of custom Q&A's. See <em>media/plg_captcha_qa/custom/qandas_custom.json</em>.
