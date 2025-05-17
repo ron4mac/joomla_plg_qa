@@ -115,7 +115,7 @@ class Qa extends CMSPlugin
 
 	private function getQandas ($ln)
 	{
-		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/custom/qandas_'.$ln.'.json';
+		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/qalang/custom/qandas_'.$ln.'.json';
 		if (file_exists($qaf)) {
 			try {
 				$qas = json_decode(file_get_contents($qaf),true);
@@ -125,7 +125,7 @@ class Qa extends CMSPlugin
 			}
 		}
 
-		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/qandas_'.$ln.'.json';
+		$qaf = JPATH_ROOT.'/media/plg_captcha_qa/qalang/qandas_'.$ln.'.json';
 		if (file_exists($qaf)) {
 			try {
 				$qas = json_decode(file_get_contents($qaf),true);

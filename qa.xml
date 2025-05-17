@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="captcha" method="upgrade">
 	<name>PLG_CAPTCHA_QA</name>
-	<creationDate>August 2024</creationDate>
+	<creationDate>May 2025</creationDate>
 	<author>Ron Crans</author>
 	<authorEmail>ronjc@rjconline.net</authorEmail>
 	<authorUrl>rjconline.net</authorUrl>
@@ -18,7 +18,7 @@
 		<folder>src</folder>
 	</files>
 	<media destination="plg_captcha_qa" folder="media">
-		<folder>custom</folder>
+		<folder>qalang</folder>
 	</media>
 	<config>
 		<fields name="params">
