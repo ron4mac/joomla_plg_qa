@@ -1,0 +1,41 @@
+; rename this file accordingly for the language .. example: qandas_en-US.json
+; add as many captcha questions and answers as desired
+; remoive these instruction lines
+[
+   {
+    "Type the word 'cat' without the a.": [
+      "ct",
+      "c t"
+    ]
+  },
+  {
+    "How many words are in THIS sentence?": [
+      "7",
+      "seven"
+    ]
+  },
+  {
+    "What is the number that follows four?": [
+      "5",
+      "five"
+    ]
+  },
+  {
+    "How many weeks are there in a year?": [
+      "52",
+      "fifty-two"
+    ]
+  },
+  {
+    "How many legs do most dogs have?": [
+      "4",
+      "four"
+    ]
+  },
+  {
+    "How many days are there in the month of September?": [
+      "30",
+      "thirty"
+    ]
+  }
+]
