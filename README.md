@@ -9,5 +9,5 @@ The plugin will also reject rapid submissions of the form.
 
 Captcha labeling and questions are customizable ... see file <em>custom.ini.sample</em> in the language folder.
 
-#### Version 1.5+ moves questions and answers to JSON files in <em>media/plg_captcha_qa</em>
+#### Version 1.5+ moves questions and answers to JSON files in <em>media/plg_captcha_qa/qalang/</em>
 This allows any number of custom Q&A's. See <em>media/plg_captcha_qa/qalang/custom/qandas_custom.json</em>.
