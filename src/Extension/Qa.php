@@ -75,6 +75,9 @@ class Qa extends CMSPlugin
 	 */
 	public function onCheckAnswer ($code)
 	{
+		// have to force an init here
+		$this->onInit(0);
+
 		$app = Factory::getApplication();
 		$input = $app->input;
 		$ccd = $input->get('captcha_code', '--', 'cmd');
@@ -105,7 +108,7 @@ class Qa extends CMSPlugin
 	private function getQans ($qn)
 	{
 		if ($this->qandas) {
-			return $this->qandas[$qn-1];
+			return array_values($this->qandas[$qn-1])[0];
 		} else {
 			$qa = Text::_('PLG_CAPTCHA_QA_Q'.$qn);
 			list($q,$a) = explode('|',$qa);
