@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="captcha" method="upgrade">
 	<name>PLG_CAPTCHA_QA</name>
-	<creationDate>October 2026</creationDate>
-	<author>Ron Crans</author>
-	<authorEmail>ronjc@rjconline.net</authorEmail>
-	<authorUrl>rjconline.net</authorUrl>
-	<version>1.5.5</version>
-	<updater jver="((4\.[1-8])||(5\.[0-3]))" pver="7.2" />
-	<copyright>Copyright (C) 2013-2026 RJCreations. All rights reserved.</copyright>
+	<creationDate>November 2026</creationDate>
+	<author>Ron Crans (original); community-maintained modification</author>
+	
+	
+	<version>2.1.1</version>
+	<copyright>Copyright (C) 2013-2026 RJCreations; modifications 2026 community contributors.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<description>PLG_CAPTCHA_QA_XML_DESCRIPTION</description>
 	<namespace path="src">RJCreations\Plugin\Captcha\Qa</namespace>
@@ -33,6 +32,14 @@
 					label="PLG_CAPTCHA_QA_TIME_CHECK_LABEL"
 					description="PLG_CAPTCHA_QA_TIME_CHECK_DESC"
 					filter="integer" />
+				<field
+					name="success_cooldown"
+					type="number"
+					default="300"
+					min="0"
+					label="PLG_CAPTCHA_QA_SUCCESS_COOLDOWN_LABEL"
+					description="PLG_CAPTCHA_QA_SUCCESS_COOLDOWN_DESC"
+					filter="integer" />
 			</fieldset>
 			<fieldset name="custom" label="PLG_CAPTCHA_QA_CUSTOMQAS" addfieldprefix="RJCreations\Plugin\Captcha\Qa\Field">
 				<field
@@ -44,7 +51,4 @@
 			</fieldset>
 		</fields>
 	</config>
-	<updateservers>
-		<server type="extension" priority="1" name="Captcha Q&amp;A Updates">https://rjcrans.net/jupdates/plg_qa/updates.php</server>
-	</updateservers>
 </extension>

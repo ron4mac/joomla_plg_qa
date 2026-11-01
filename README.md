@@ -1,13 +1,34 @@
-# joomla_plg_qa
-A simple, yet effective, Joomla! captcha plugin that uses a question and answer method.  
+# Captcha QA 2.1.1 — Joomla 5.4 / 6
 
-What is the 4<sup>th</sup> letter of the word 'foxtail'? ... possible answers: t,T  
-How many 3's are in the number: 1,347,237? ... possible answers: 2,two  
-What is the sum of 2 plus three? ... possible answers: 5,five  
+Community-maintained modification of [Captcha QA by Ron Crans / RJCreations](https://github.com/ron4mac/joomla_plg_qa) version 1.5.5. **Not an official RJCreations release.**
 
-The plugin will also reject rapid submissions of the form.  
+## Installation
 
-Captcha labeling and questions are customizable ... see file <em>custom.ini.sample</em> in the language folder.
+Download the installable ZIP from GitHub **Releases** and use Joomla System → Install → Extensions. **Do not uninstall the prior `captcha/qa` plugin.** This package updates the same plugin identity and is intended to preserve existing configuration and user-created question files in `media/plg_captcha_qa/custom/`. Back up the site first.
 
-#### Version 1.5+ moves questions and answers to JSON files in <em>media/plg_captcha_qa/qalang/</em>
-This allows any number of custom Q&A's. See <em>media/plg_captcha_qa/qalang/custom/qandas_custom.json</em>.
+## Compatibility
+
+Tested by a community user with Joomla 5.4.10, Joomla 6 with *Behaviour – Backward Compatibility 6* disabled, and Kunena 7.1.0 (Captcha on Joomla 5). Also tested with Joomla registration and Akeeba Engage on Joomla 5. Joomla 6 registration, answer checking, question editing and minimum response time were tested. Not all extensions or attack scenarios have been tested.
+
+## Timing settings
+
+- **Minimum response time (`time_check`)**: default 10 seconds. A CAPTCHA challenge must be at least this old when a correct answer is submitted. A wrong answer reports an answer error first.
+- **Cooldown after successful CAPTCHA (`success_cooldown`)**: default 300 seconds (5 minutes). After a successful check, another *successful* check in the same Joomla session is rejected until this period ends. Applies across all forms using QA. Incorrect answers do not reset or extend the cooldown. The cooldown error displays the remaining time in seconds.
+- Set either value to **0** to disable that check. Changing Joomla session / clearing session cookies can reset the cooldown; it is intentionally not IP- or fingerprint-based.
+- Cooldown begins at CAPTCHA success, not when the form action (e.g. registration) is completed.
+
+## Changes from upstream 1.5.5
+
+- Modern `CaptchaProviderInterface` with `onCaptchaSetup`.
+- HMAC-SHA256-signed challenge tied to Joomla session, one-hour expiry and one-time acceptance.
+- Protect question editor with administrator permission and POST CSRF checks; constrain custom filenames and input.
+- Remove debug file writes; escape question filename output.
+- Remove upstream update URL; keep original plugin ID `captcha/qa` for in-place upgrade.
+
+## Files
+
+The repository root contains the Joomla install package sources (`qa.xml`, `src/`, `services/`, `media/`, `language/`, `layouts/`, `script.php`). The installable release ZIP contains these files directly in its top level, **not** within a parent folder.
+
+## License and credits
+
+GPL-3.0-or-later (see `LICENSE.txt`), preserving original attribution and license notices. Original code © RJCreations / Ron Crans. Modifications are provided as a community fork and are not endorsed by the original author. Contributions welcome.

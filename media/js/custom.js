@@ -19,7 +19,7 @@ function editQas (qasn) {
 };
 
 window.addEventListener('message', function(event) {
-	console.log(event);
+	if (event.origin !== window.location.origin) return;
 	const modalElement = document.getElementById('complexDataModal');
 	const modalInstance = bootstrap.Modal.getInstance(modalElement);
 	if (modalInstance) {

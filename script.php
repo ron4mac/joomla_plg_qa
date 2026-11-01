@@ -11,7 +11,7 @@ use Joomla\CMS\Installer\InstallerScript;
 
 class plgCaptchaQaInstallerScript extends InstallerScript
 {
-	protected $minimumJoomla = '4.0';
+	protected $minimumJoomla = '5.4';
 	protected $deleteFiles = ['/plugins/captcha/qa/qa.php'];
 
 	public function install ($parent) 
