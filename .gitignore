@@ -1,0 +1,18 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Build outputs and archives
+*.zip
+*.tar.gz
+build/
+dist/
+
+# Local files and dependencies
+vendor/
+node_modules/
+.env
