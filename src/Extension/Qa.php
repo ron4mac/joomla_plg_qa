@@ -3,23 +3,28 @@
 * @package		plg_captcha_qa (Plugin Captcha Q&A)
 * @copyright	(C) 2013-2026 RJCreations. All rights reserved.
 * @license		GNU General Public License version 3 or later; see LICENSE.txt
-* @since		1.5.5
+* @since		2.0.0
 */
 namespace RJCreations\Plugin\Captcha\Qa\Extension;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Input\Input;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\Captcha\CaptchaSetupEvent;
+use RJCreations\Plugin\Captcha\Qa\Provider\QaCaptchaProvider;
 
-class Qa extends CMSPlugin implements SubscriberInterface
+final class Qa extends CMSPlugin implements SubscriberInterface
 {
 	protected $autoloadLanguage = true;
 	protected $timecheck;
+	protected $rawFile;
 	protected $qandas = [];
 
 	public function __construct ($subject, $config)
@@ -29,110 +34,55 @@ class Qa extends CMSPlugin implements SubscriberInterface
 		$this->timecheck = $this->params->get('time_check', 10, 'INT');
 	}
 
-	/*
-	 * Initialise the captcha
-	 * @param   string	$id	The id of the field.
-	 * @return  Boolean	True on success, false otherwise
-	 */
-	public function onInit ($id=null)
+	public static function getSubscribedEvents (): array
 	{
-		$lang = Factory::getLanguage();
-		$lang->load('custom' , dirname(__FILE__, 3), $lang->getTag(), true);
-		$cstm = $this->params->get('customqa', '', 'STRING');
-		if ($cstm) {
-			$this->getQandas($cstm, true);
-			return true;
-		}
-		$this->getQandas('en-GB');
-		if ($lang->getTag() != 'en-GB') {
-			$this->getQandas($lang->getTag());
-		}
-		return true;
+		return ['onCaptchaSetup' => 'onCaptchaSetup', 'onAjaxQa' => 'onAjaxQa'];
 	}
 
-	/*
-	 * Gets the challenge HTML
-	 * @return  string  The HTML to be embedded in the form.
-	 */
-	public function onDisplay ($name, $id, $class)
+	public function onCaptchaSetup (CaptchaSetupEvent $event): void
 	{
-		if ($this->qandas) {
-			$rq = (rand() % count($this->qandas));
-			$tm = time();
-			$sf = (($rq+1) * $tm) % 97;
-			$fld = '<br><input type="text" class="form-control'.($class?' '.$class:'').'" id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
-			$ccd = '<input type="hidden" name="captcha_code" value="'.($rq+1)."-{$tm}-{$sf}".'" />';
-			$label = '<span>'.Text::_('PLG_CAPTCHA_QA_LABEL_PLEASE').'</span>';
-			$q = key($this->qandas[$rq]);
-			return $label.'<br>'.trim($q).$fld.$ccd;
-		}
-		$rq = (rand() % 9) + 1;
-		$tm = time();
-		$sf = ($rq * $tm) % 97;
-		$fld = '<br><input type="text" class="form-control'.($class?' '.$class:'').'" id="'.$id.'" name="'.$name.'" required="required" aria-required="true" value="" />';
-		$ccd = '<input type="hidden" name="captcha_code" value="'."{$rq}-{$tm}-{$sf}".'" />';
-		$label = '<span>'.Text::_('PLG_CAPTCHA_QA_LABEL_PLEASE').'</span>';
-		$qa = Text::_('PLG_CAPTCHA_QA_Q'.$rq);
-		[$q, $a] = explode('|',$qa);
-		return $label.'<br>'.trim($q).$fld.$ccd;
-	}
-
-	/*
-	 * Calls an HTTP POST function to verify if the user's guess was correct
-	 * @return  True if the answer is correct, false otherwise
-	 */
-	public function onCheckAnswer ($code)
-	{
-		// have to force an init here
-		$this->onInit(0);
-
-		$app = Factory::getApplication();
-		$input = $app->getInput();
-		$ccd = $input->get('captcha_code', '--', 'cmd');
-		[$qn, $tm, $ck] = explode('-', $ccd);
-		if ((int)$qn * (int)$tm % 97 !== (int)$ck) {
-			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'), 'error');
-			return false;
-		}
-		if (!$qn) {
-			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_GENERAL'), 'error');
-			return false;
-		}
-		if ($this->timecheck && ((time()-$tm) < $this->timecheck)) {
-			$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_TOO_QUICK'), 'error');
-			return false;
-		}
-		$cas = $this->getQans($qn);
-		if (in_array(trim($code), array_map(trim(...), $cas))) {
-			return true;
-		}
-		$app->enqueueMessage(Text::_('PLG_CAPTCHA_QA_ERROR_NOT_HUMAN').' '.Text::_('PLG_CAPTCHA_QA_ERROR_INCORRECT'), 'error');
-		return false;
+		$event->getCaptchaRegistry()->add(new QaCaptchaProvider($this->params));
 	}
 
 	public function onAjaxQa (): void
 	{
-		$app = Factory::getApplication();
-
+		$app = $this->getApplication();
+		if (!$app->isClient('administrator') || !$app->getIdentity()->authorise('core.manage', 'com_plugins')) {
+			throw new \RuntimeException('Not authorized', 403);
+		}
 		$input = $app->getInput();
-		$indat = [$input->get->getArray(), $input->post->getArray()];
-		file_put_contents('DADAT.txt', print_r($indat, true), FILE_APPEND);
-
-		$post = $input->post->getArray();
-		if ($post) {
-			$this->saveQandas($post);
+		if ($input->post->count()) {
+			$this->saveQandas($input->post);
 		} else {
-			$this->sendForm($input->getString('itemid', 0));
+			$act = $input->get('act', '', 'cmd');
+			$item = $input->get('itemid', null, 'path');
+			switch ($act) {
+				case 'edit':
+					$this->sendForm($item);
+					break;
+				case 'down':
+					$this->sendFile($item);
+					break;
+				case 'delete':
+					$this->deleteFile($item);
+					break;
+				case 'upload':
+					echo $this->receiveFile($input->files);
+					break;
+				default:
+					echo 'Not Implemented';
+			}
 		}
 		$app->close();
 	}
 
 	private function loadComplexData ($id): array
 	{
-		$this->getQandas($id, true);
+		if ($id) $this->getQandas($id, true);
 		if ($this->qandas) {
 			$qans = [];
 			foreach ($this->qandas as $qa) {
+				if (!is_array($qa)) return [];
 				foreach ($qa as $q=>$a) {
 					$qans[$q] = implode(' | ',$a);
 				}
@@ -142,7 +92,6 @@ class Qa extends CMSPlugin implements SubscriberInterface
 				'customnum' => $id
 			];
 		}
-		// Replace with your database queries or external API calls
 		return [
 			'questions' => [''=>''],
 			'customnum' => $id
@@ -159,7 +108,7 @@ class Qa extends CMSPlugin implements SubscriberInterface
 		return explode(',',trim($a));
 	}
 
-	private function getQandas ($ln, bool $cstm=false): void				//<<< @@@@@@@@@  fix logic
+	private function getQandas ($ln, bool $cstm=false): void				//<<< @@@@@@@@@	 fix logic
 	{
 		foreach (['/custom',''] as $subd) {
 			if ($cstm) {
@@ -169,9 +118,8 @@ class Qa extends CMSPlugin implements SubscriberInterface
 			}
 			if (file_exists($qaf)) {
 				try {
-					$qas = json_decode(file_get_contents($qaf),true);
-					$this->qandas = $qas;
-					file_put_contents('QAS.txt',print_r($qas, true));
+					$this->rawFile = file_get_contents($qaf);
+					$this->qandas = json_decode($this->rawFile, true);
 					return;
 				} catch (\JsonException $e) {
 				}
@@ -179,23 +127,55 @@ class Qa extends CMSPlugin implements SubscriberInterface
 		}
 	}
 
-	private function saveQandas (array $data): void
+	private function receiveFile (\Joomla\Input\Input $files)
 	{
-		$custf = JPATH_ROOT.'/media/plg_captcha_qa/custom';
-		Folder::create($custf);
-		$qas = [];
-		$cnt = count($data['Q']);
-		for ($i=0; $i<$cnt; $i++) {
-			$qas[] = [$data['Q'][$i] => array_map(trim(...), explode('|',$data['A'][$i]))];
+		$file = $files->get('qaafile');
+		if (!$file || empty($file['name'])) return $this->jsonResp(Text::_('PLG_CAPTCHA_QA_UI_UPLD_NF'));
+		if ($file['error'] !== UPLOAD_ERR_OK) return $this->jsonResp(Text::sprintf('PLG_CAPTCHA_QA_UI_UPLDERRC', $file['error']));
+		$json = file_get_contents($file['tmp_name']);
+		json_decode($json);
+		if (json_last_error() !== JSON_ERROR_NONE) return $this->jsonResp(Text::_('PLG_CAPTCHA_QA_UI_UPLDBAD'));
+		$custf = $this->customFolder();
+		$safeFilename = File::makeSafe($file['name']);
+		$destinationPath = $custf . $safeFilename;
+		if (!File::upload($file['tmp_name'], $destinationPath)) return $this->jsonResp(Text::_('PLG_CAPTCHA_QA_UI_UPLD_MV'));
+		$rsp = '';
+		if ($this->loadComplexData($safeFilename)) {
+			$rsp = ['type'=>'message', 'msg'=>$safeFilename.'<br>'.Text::_('PLG_CAPTCHA_QA_UI_UPLDOK')];
+		} else {
+			$rsp = ['type'=>'warning', 'msg'=>$safeFilename.'<br>'.Text::_('PLG_CAPTCHA_QA_UI_MALFILE')];
 		}
-		file_put_contents($custf.'/'.$data['FN'], json_encode($qas, JSON_PRETTY_PRINT));
-		echo json_encode(['success'=>true]);
+		return $this->jsonResp($rsp, true);
+	}
+
+	private function saveQandas (\Joomla\Input\Input $post): void
+	{
+		$fn = $post->get('FN', null, 'path');
+		if (!$fn) throw new \RuntimeException('Invalid filename', 400);
+		if (!str_ends_with(strtolower($fn), '.json')) {
+			$fn .= '.json';
+		}
+		$custf = $this->customFolder();
+		$fpath = $custf.$fn;
+		$new = !file_exists($fpath);
+		$qas = [];
+		$Q = $post->get('Q', [], 'array');
+		$A = $post->get('A', [], 'array');
+		$cnt = count($Q);
+		for ($i=0; $i<$cnt; $i++) {
+			$qas[] = [$Q[$i] => array_map(trim(...), explode('|',$A[$i]))];
+		}
+		file_put_contents($fpath, json_encode($qas, JSON_PRETTY_PRINT));
+		echo json_encode(['success'=>true, 'new'=>$new]);
 	}
 
 	private function sendForm ($qnum): void
 	{
 		$data = $this->loadComplexData($qnum);
-
+		if (!$data) {
+			echo strtoupper(Text::_('PLG_CAPTCHA_QA_UI_MALFILE'));
+			return;
+		}
 		$basePath = JPATH_PLUGINS . '/captcha/qa/layouts';
 		$layout = new FileLayout('modal.questions', $basePath);
 		$htmlOutput = $layout->render([
@@ -205,9 +185,43 @@ class Qa extends CMSPlugin implements SubscriberInterface
 		echo $htmlOutput;
 	}
 
-	public static function getSubscribedEvents (): array
+	private function sendFile ($qnum): void
 	{
-		return ['onInit' => 'onInit', 'onDisplay' => 'onDisplay', 'onCheckAnswer' => 'onCheckAnswer', 'onAjaxQa' => 'onAjaxQa'];
+		$this->getQandas($qnum, true);
+		Factory::getApplication()->getDocument()->setMimeEncoding('application/download');
+		header("Pragma: public");
+		header("Expires: 0"); 
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+		header("Cache-Control: private",false); // required for certain browsers 
+		header('Content-Disposition: attachment; filename="'.$qnum.'"');
+		header("Content-Transfer-Encoding: binary");
+		header('Content-Length: '.strlen($this->rawFile));
+		echo $this->rawFile;
+	}
+
+	private function deleteFile ($qnum): void
+	{
+		$qaf = $this->customFolder(false).$qnum;
+		if (file_exists($qaf)) {
+			unlink($qaf);
+		} else {
+			echo 'does not exist';
+		}
+	}
+
+	private function customFolder ($create=true): string
+	{
+		$custf = JPATH_ROOT.'/media/plg_captcha_qa/custom/';
+		if ($create && !Folder::exists($custf)) {
+			Folder::create($custf);
+			file_put_contents($custf . 'index.html', '<html<body></body></html>');
+		}
+		return $custf;
+	}
+
+	private function jsonResp (mixed $msg='', bool $scs=false)
+	{
+		return json_encode(['success' => $scs, 'message' => $msg]);
 	}
 
 }

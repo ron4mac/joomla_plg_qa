@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="captcha" method="upgrade">
 	<name>PLG_CAPTCHA_QA</name>
-	<creationDate>October 2026</creationDate>
+	<creationDate>November 2026</creationDate>
 	<author>Ron Crans</author>
 	<authorEmail>ronjc@rjconline.net</authorEmail>
 	<authorUrl>rjconline.net</authorUrl>
-	<version>1.5.5</version>
-	<updater jver="((4\.[1-8])||(5\.[0-3]))" pver="7.2" />
+	<version>2.0.0</version>
+	<updater jver="((4\.[1-8])||(5\.[0-3])||(6\.[0-4]))" pver="8.1" />
 	<copyright>Copyright (C) 2013-2026 RJCreations. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<description>PLG_CAPTCHA_QA_XML_DESCRIPTION</description>
@@ -33,6 +33,13 @@
 					label="PLG_CAPTCHA_QA_TIME_CHECK_LABEL"
 					description="PLG_CAPTCHA_QA_TIME_CHECK_DESC"
 					filter="integer" />
+				<field
+					name="cool_down"
+					type="number"
+					default="300"
+					label="PLG_CAPTCHA_QA_COOL_DOWN_LABEL"
+					description="PLG_CAPTCHA_QA_COOL_DOWN_DESC"
+					filter="integer" />
 			</fieldset>
 			<fieldset name="custom" label="PLG_CAPTCHA_QA_CUSTOMQAS" addfieldprefix="RJCreations\Plugin\Captcha\Qa\Field">
 				<field
@@ -40,7 +47,10 @@
 					type="customqas"
 					default="0"
 					hiddenLabel="true" />
-				<field name="my_modal_container" type="modal" control_class="notshown" />
+				<field
+					name="my_modal_container"
+					type="modal"
+					control_class="notshown" />
 			</fieldset>
 		</fields>
 	</config>

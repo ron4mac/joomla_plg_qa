@@ -3,7 +3,7 @@
 * @package		plg_captcha_qa
 * @copyright	Copyright (C) 2022-2026 RJCreations. All rights reserved.
 * @license		GNU General Public License version 3 or later; see LICENSE.txt
-* @since		1.5.4
+* @since		2.0.0
 */
 \defined('_JEXEC') or die;
 
@@ -26,7 +26,6 @@ return new class () implements ServiceProviderInterface {
                     (array) PluginHelper::getPlugin('captcha', 'qa')
                 );
                 $plugin->setApplication(Factory::getApplication());
-
                 return $plugin;
             }
         );
